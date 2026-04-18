@@ -39,7 +39,7 @@ The crystal name should be given without the file extension, and wavelength shou
 Example command:
 This command produces the magnetic neutron diffraction plot for a crystal titled BCC with partial occupancy. The wavelength of the incident neutrons is 1.54 A.
 ```
-python3 diffraction.py BCC 1.54 -nm -po
+python3 diffraction.py B2-II 1.54 -nm -po
 ```
 
 ## Files required
