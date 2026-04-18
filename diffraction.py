@@ -46,6 +46,8 @@ if "-t" in sys.argv:
 if "-po" in sys.argv:
     partial_occupancy = True
     occupancies = get_occupancies(name)
+if "-s" in sys.argv:
+    show = True
 
 
 crystal = get_crystal(name, file_type)
@@ -194,10 +196,9 @@ for i in range(len(y1)):
 '''
 plt.title("My code")
 plt.plot(two_theta_g, I_G_g)
-#plt.plot(x, y)
-
 plt.xlim(0, 120)
 plt.ylim(0, 1.1)
 plt.xlabel(r"2${\Theta}$ [deg]")
 plt.ylabel(r"Intensity")
-plt.show()
+if show:
+    plt.show()
