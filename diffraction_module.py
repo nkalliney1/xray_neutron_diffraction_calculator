@@ -62,10 +62,10 @@ def get_magnetic_moment(symbol, moments):
     else:
         return 0
     
-def get_moments(name):
+def get_moments(name, path):
     #get all magnetic moments
     moments = {}
-    with open("./crystals/" + name + "-moments.csv") as f:
+    with open(path + "/" + name + "-moments.csv") as f:
         lines = f.readlines()
         for line in lines:
             line_split = line.split(" ")
@@ -142,10 +142,6 @@ def calculate_I_m(crystal, v, wavelength, theta_r, j0_coeffs, j2_coeffs, moments
         m = 0
         if partial_occupancy:
             for atom in occupancies[crystal.symbols[i]]:
-                if (v[0] == 1 and v[1] == 1 and v[2] == 0):
-                    print(atom)
-                    print(float(get_magnetic_f(atom[0],wavelength,theta_r, j0_coeffs, j2_coeffs)))
-                    print(get_magnetic_moment(atom[0], moments))
                 
                 f2 = atom[1]*float(get_magnetic_f(atom[0],wavelength,theta_r, j0_coeffs, j2_coeffs))
                 m2 = atom[1]*get_magnetic_moment(atom[0], moments)
@@ -157,11 +153,7 @@ def calculate_I_m(crystal, v, wavelength, theta_r, j0_coeffs, j2_coeffs, moments
             m = get_magnetic_moment(crystal.symbols[i], moments)
         
         e = cmath.exp(complex(0,-2*math.pi*np.dot(v, positions[i])))
-        if (v[0] == 1 and v[1] == 1 and v[2] == 0):
-            print(f*e*m)
         F_m = np.add(F_m, f*e*m)
-    if (v[0] == 1 and v[1] == 1 and v[2] == 0):
-       print(F_m)
     k_hat = v / math.sqrt(np.dot(v, v))
     I = np.linalg.norm(np.cross(k_hat, np.cross(F_m, k_hat)))**2
 
@@ -185,13 +177,13 @@ def calculate_I(type, form_factors,crystal, v, wavelength, theta_r, j0_coeffs, j
         I += (1/0.066745253805)*calculate_I_m(crystal, v, wavelength, theta_r, j0_coeffs, j2_coeffs, moments, partial_occupancy, occupancies)
     return L*P*T*I
 
-def get_crystal(name, file_type):
+def get_crystal(name, file_type, path):
     if file_type == "v":
-        crystal = ase.io.vasp.read_vasp("./crystals/"+name+".vasp")
+        crystal = ase.io.vasp.read_vasp(path+"/"+name+".vasp")
     elif file_type == "f":
         crystal = read_crystal_file(name)
     else:
-        crystal = ase.io.cif.read_cif("./crystals/"+name+".cif")
+        crystal = ase.io.cif.read_cif(path+ "/"+name+".cif")
     return crystal
 
 def get_form_factor_array(crystal, diffraction_type, partial_occupancy, occupancies):
@@ -277,10 +269,10 @@ def get_j2_coeffs(crystal, partial_occupancy, occupancies):
                 j2[line[0:2]]=[float(x) for x in nums]
     return j2
 
-def get_occupancies(name):
+def get_occupancies(name, path):
     occupancies = {}
 
-    with open("./crystals/"+name+"-header.csv", newline='') as f:
+    with open(path+"/"+name+"-header.csv", newline='') as f:
         lines = f.readlines()
         for i in range(0,len(lines)):
             line = lines[i]

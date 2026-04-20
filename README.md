@@ -32,14 +32,14 @@ If the crystal has partial occupancy, add the flag `-po`.
 ### Command structure
 When running the code, the terminal command follows this structure:
 ```
-python3 diffraction.py crystal_name wavelength diffraction_type optional_flags
+./diffraction.py crystal_name wavelength diffraction_type path_to_folder optional_flags
 ```
-The crystal name should be given without the file extension, and wavelength should be in Angstroms.
+The crystal name should be given without the file extension, and wavelength should be in Angstroms. The path to the folder should be the path from the place where the code is located, and the folder should contain all the necessary crystal-specific files to run the code, including the crystal structure, magnetic moments, and header file.
 
 Example command:
 This command produces the magnetic neutron diffraction plot for a crystal titled BCC with partial occupancy. The wavelength of the incident neutrons is 1.54 A.
 ```
-python3 diffraction.py B2-II 1.54 -nm -po
+./diffraction.py B2-II 1.54 -nm ./crystals -po
 ```
 
 ## Files required

@@ -29,11 +29,14 @@ if "n" in sys.argv[3]:
 if "m" in sys.argv[3]:
     diffraction_type += "m"
 
+path = sys.argv[4]
+
 p_on = False
 t_on = False
 l_on = False
 partial_occupancy = False
 occupancies = {}
+show = False
 if "-p" in sys.argv:
     lp_on = True
 if "-l" in sys.argv:
@@ -45,12 +48,12 @@ if "-t" in sys.argv:
     t_on = True
 if "-po" in sys.argv:
     partial_occupancy = True
-    occupancies = get_occupancies(name)
+    occupancies = get_occupancies(name, path)
 if "-s" in sys.argv:
     show = True
 
 
-crystal = get_crystal(name, file_type)
+crystal = get_crystal(name, file_type, path)
 form_factor_array = get_form_factor_array(crystal, diffraction_type, partial_occupancy, occupancies)
 rvectors = get_reciprocal_vectors(crystal)
 j0_coeffs = 0
@@ -59,7 +62,7 @@ moments = 0
 if "m" in diffraction_type:
     j0_coeffs = get_j0_coeffs(crystal, partial_occupancy, occupancies)
     j2_coeffs = get_j2_coeffs(crystal, partial_occupancy, occupancies)
-    moments = get_moments(name)
+    moments = get_moments(name, path)
 
 two_theta = []
 I_G = []
@@ -149,9 +152,14 @@ max = 0
 for i in range(len(I_G_g)):
     if I_G_g[i] > max and two_theta_g[i] > 0 and two_theta_g[i] < 120:
         max = I_G_g[i]
-print(max)
 for i in range(len(I_G_g)):
     I_G_g[i] = I_G_g[i]/max
+
+to_write2 = "2theta, I\n"
+for i in range(len(two_theta)):
+    if I_G[i] > 0:
+        to_write2 += str(two_theta[i]) + "," + str(I_G[i])+"\n"
+print(to_write2)
 
 '''
 #writes to file type for paper only
@@ -194,11 +202,11 @@ for i in range(len(y1)):
 for i in range(len(y1)):
     y[i] = y[i]/max2
 '''
-plt.title("My code")
-plt.plot(two_theta_g, I_G_g)
-plt.xlim(0, 120)
-plt.ylim(0, 1.1)
-plt.xlabel(r"2${\Theta}$ [deg]")
-plt.ylabel(r"Intensity")
 if show:
+    plt.title("My code")
+    plt.plot(two_theta_g, I_G_g)
+    plt.xlim(0, 120)
+    plt.ylim(0, 1.1)
+    plt.xlabel(r"2${\Theta}$ [deg]")
+    plt.ylabel(r"Intensity")
     plt.show()
