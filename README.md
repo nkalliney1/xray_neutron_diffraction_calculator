@@ -29,6 +29,9 @@ The wavelength of the scattering x-ray or neutron must be specified by the user.
 ### Partial occupancy
 If the crystal has partial occupancy, add the flag `-po`.
 
+### Displaying plots
+To display the diffraction plot, include `-s`.
+
 ### Command structure
 When running the code, the terminal command follows this structure:
 ```
@@ -39,7 +42,7 @@ The crystal name should be given without the file extension, and wavelength shou
 Example command:
 This command produces the magnetic neutron diffraction plot for a crystal titled BCC with partial occupancy. The wavelength of the incident neutrons is 1.54 A.
 ```
-./diffraction.py B2-II 1.54 -nm ./crystals -po
+./diffraction.py B2-II 1.54 -nm ./crystals -po -s
 ```
 
 ## Files required
